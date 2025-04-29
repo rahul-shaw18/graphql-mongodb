@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AuthorsService } from './authors.service';
 import { AuthorsResolver } from './authors.resolver';
-import { Mongoose } from 'mongoose';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthorSchema } from './authors.schema';
 

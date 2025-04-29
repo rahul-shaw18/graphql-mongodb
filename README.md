@@ -96,3 +96,41 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+
+
+## GraphQL Understanding the basics (replace/add the below code in Module)
+
+@Module({
+  imports: [
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      playground: false,
+      plugins: [ApolloServerPluginLandingPageLocalDefault()],
+      typeDefs: `
+        type Todo {
+          id: ID!
+          title: String!
+          completed: Boolean!
+        }
+
+        type Query {
+          getTodos: [Todo]
+        }
+      `,
+      resolvers: {
+        Query: {
+          getTodos: () => [
+            { id: '1', title: 'Todo 1', completed: false },
+            { id: '2', title: 'Todo 2', completed: true },
+          ],
+        }
+      }
+    }),
+    MongooseModule.forRoot(
+      'localhost:3000',
+    ),
+  ],
+  controllers: [],
+  providers: [],
+})
+
