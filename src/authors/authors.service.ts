@@ -8,12 +8,14 @@ import {
   UpdateAuthorInput,
 } from './authors.schema';
 import { Model, Types } from 'mongoose';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthorsService {
   /** Inject the Mongoose model for the Author schema */
   constructor(
     @InjectModel("Author") private authorModel: Model<AuthorDocument>,
+    private configService:ConfigService
   ) {}
 
   async getAllAuthors(params: FindAuthorInput) {
@@ -53,6 +55,7 @@ export class AuthorsService {
     if (!author._id) {
       throw new HttpException('Failed to create author', 417);
     }
+    console.log(this.configService.get<string>('ENV_MODE'));
     return author;
   }
 
