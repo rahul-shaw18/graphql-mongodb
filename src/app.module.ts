@@ -11,12 +11,13 @@ import { ThreadsModule } from './threads/threads.module';
 import { GameModule } from './game/game.module';
 import { AchievementModule } from './achievement/achievement.module';
 
+const ENV = process.env.NODE_ENV;
+console.log(ENV);
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: ['.env'],
-     
+      envFilePath: !ENV ? '.env' : `.env.${ENV.trim()}`
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
@@ -29,7 +30,8 @@ import { AchievementModule } from './achievement/achievement.module';
       inject: [ConfigService],
       
       useFactory: async (config: ConfigService) => ({
-        uri: config.get<string>('DATABASE_URL'),
+        uri: config.get<string>('DATABASE_URI'),
+        dbName: config.get<string>('DATABASE_NAME'),
       })
     }),
     GameModule
